@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
-from views import View
 import time
+from views import View
 
 class ManterClienteUI:
     def main():
         st.header("Cadastro de Clientes")
-        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
+        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir","Atualizar", "Excluir"])
         with tab1: ManterClienteUI.listar()
         with tab2: ManterClienteUI.inserir()
         with tab3: ManterClienteUI.atualizar()
@@ -36,9 +36,9 @@ class ManterClienteUI:
         if len(clientes) == 0: st.write("Nenhum cliente cadastrado")
         else:
             op = st.selectbox("Atualização de Clientes", clientes)
-            nome = st.text_input("Informe o novo nome", op.get_nome())
-            email = st.text_input("Informe o novo e-mail", op.get_email())
-            fone = st.text_input("Informe o novo fone", op.get_fone())
+            nome = st.text_input("Novo nome", op.get_nome())
+            email = st.text_input("Novo e-mail", op.get_email())
+            fone = st.text_input("Novo fone", op.get_fone())
             if st.button("Atualizar"):
                 id = op.get_id()
                 View.cliente_atualizar(id, nome, email, fone)
