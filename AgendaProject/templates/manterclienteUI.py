@@ -6,14 +6,14 @@ from views import View
 class ManterClienteUI:
     def main():
         st.header("Cadastro de Clientes")
-        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir","Atualizar", "Excluir"])
+        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
         with tab1: ManterClienteUI.listar()
         with tab2: ManterClienteUI.inserir()
         with tab3: ManterClienteUI.atualizar()
         with tab4: ManterClienteUI.excluir()
 
     def listar():
-        clientes = View.cliente_listar()
+        clientes = View.cliente_listar_objetos()
         if len(clientes) == 0: st.write("Nenhum cliente cadastrado")
         else:
             list_dic = []
@@ -31,7 +31,7 @@ class ManterClienteUI:
             st.success("Cliente inserido com sucesso")
             time.sleep(2)
             st.rerun()
-
+    
     def atualizar():
         clientes = View.cliente_listar()
         if len(clientes) == 0: st.write("Nenhum cliente cadastrado")
@@ -45,8 +45,6 @@ class ManterClienteUI:
                 id = op.get_id()
                 View.cliente_atualizar(id, nome, email, fone, senha)
                 st.success("Cliente atualizado com sucesso")
-                time.sleep(2)
-                st.rerun()
 
     def excluir():
         clientes = View.cliente_listar()
@@ -57,5 +55,6 @@ class ManterClienteUI:
                 id = op.get_id()
                 View.cliente_excluir(id)
                 st.success("Cliente excluído com sucesso")
-                time.sleep(2)
-                st.rerun()
+
+
+
