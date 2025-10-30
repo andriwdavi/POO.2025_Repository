@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
 import time
-from views import View
+from view import View
 
 class ManterClienteUI:
+
     def main():
         st.header("Cadastro de Clientes")
         tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
@@ -13,7 +14,7 @@ class ManterClienteUI:
         with tab4: ManterClienteUI.excluir()
 
     def listar():
-        clientes = View.cliente_listar_objetos()
+        clientes = View.cliente_listar()
         if len(clientes) == 0: st.write("Nenhum cliente cadastrado")
         else:
             list_dic = []
@@ -27,11 +28,14 @@ class ManterClienteUI:
         fone = st.text_input("Informe o fone")
         senha = st.text_input("Informe a senha", type="password")
         if st.button("Inserir"):
-            View.cliente_inserir(nome, email, fone, senha)
-            st.success("Cliente inserido com sucesso")
-            time.sleep(2)
-            st.rerun()
-    
+            try:
+                View.cliente_inserir(nome, email, fone, senha)
+                st.success("Cliente inserido com sucesso")
+                time.sleep(2)
+                st.rerun()
+            except ValueError as e:
+                st.error(f"Erro ao inserir cliente: {e}")
+
     def atualizar():
         clientes = View.cliente_listar()
         if len(clientes) == 0: st.write("Nenhum cliente cadastrado")
@@ -42,9 +46,14 @@ class ManterClienteUI:
             fone = st.text_input("Novo fone", op.get_fone())
             senha = st.text_input("Nova senha", op.get_senha(), type="password")
             if st.button("Atualizar"):
-                id = op.get_id()
-                View.cliente_atualizar(id, nome, email, fone, senha)
-                st.success("Cliente atualizado com sucesso")
+                try:
+                    id = op.get_id()
+                    View.cliente_atualizar(id, nome, email, fone, senha)
+                    st.success("Cliente atualizado com sucesso")
+                    time.sleep(2)
+                    st.rerun()
+                except ValueError as e:
+                    st.error(f"Erro ao atualizar cliente: {e}")
 
     def excluir():
         clientes = View.cliente_listar()
@@ -52,9 +61,11 @@ class ManterClienteUI:
         else:
             op = st.selectbox("Exclusão de Clientes", clientes)
             if st.button("Excluir"):
-                id = op.get_id()
-                View.cliente_excluir(id)
-                st.success("Cliente excluído com sucesso")
-
-
-
+                try:
+                    id = op.get_id()
+                    View.cliente_excluir(id)
+                    st.success("Cliente excluído com sucesso")
+                    time.sleep(2)
+                    st.rerun()
+                except ValueError as e: 
+                    st.error(f"Erro ao excluir cliente: {e}")
