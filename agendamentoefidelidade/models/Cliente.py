@@ -8,6 +8,8 @@ class Cliente:
         self.__email = email
         self.__fone = fone
         self.set_senha(senha)
+        self.__pontos = 0
+        self.__nivel = 'Bronze'
 
     def get_senha(self): return self.__senha
     def set_senha(self, senha): self.__senha = senha
@@ -37,16 +39,25 @@ class Cliente:
         return self.__fone
 
 
+    def get_pontos(self): return self.__pontos
+    def set_pontos(self, pontos): self.__pontos = pontos
+
+    def get_nivel(self): return self.__nivel
+    def set_nivel(self, nivel): self.__nivel = nivel
+
     def __str__(self):
         return f"{self.__id} - {self.__nome} | {self.__email} | {self.__fone}"
 
     def to_json(self):
-        dic = {"id":self.__id, "nome":self.__nome,"email":self.__email, "fone":self.__fone, "senha": self.__senha}
+        dic = {"id":self.__id, "nome":self.__nome,"email":self.__email, "fone":self.__fone, "senha": self.__senha, "pontos": self.__pontos, "nivel": self.__nivel}
         return dic
 
     @staticmethod
     def from_json(dic):
-        return Cliente(dic["id"], dic["nome"], dic["email"], dic["fone"], dic["senha"])
+        cliente = Cliente(dic["id"], dic["nome"], dic["email"], dic["fone"], dic["senha"])
+        if "pontos" in dic: cliente.set_pontos(dic["pontos"])
+        if "nivel" in dic: cliente.set_nivel(dic["nivel"])
+        return cliente
 
 import json
 

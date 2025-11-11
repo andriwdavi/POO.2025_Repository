@@ -7,12 +7,32 @@ from datetime import datetime
 class View:   
     @classmethod
     def _validar_email(cls, email):
+        """
+        Valida se o e-mail já existe na lista de clientes ou profissionais.
+        Normaliza o e-mail (strip + lower) antes de comparar.
+        Lança ValueError caso já exista ou se for o usuário reservado "admin".
+        """
+        if not isinstance(email, str) or not email.strip():
+            raise ValueError("E-mail inválido")
+        email_norm = email.strip().lower()
+        if email_norm == "admin":
+            raise ValueError("Esse e-mail já foi cadastrado")
+        # verificar clientes
         for c in View.cliente_listar():
-            raise ValueError("Esse e-mail já foi cadastrado")
+            try:
+                existing = c.get_email()
+            except Exception:
+                existing = None
+            if existing and isinstance(existing, str) and existing.strip().lower() == email_norm:
+                raise ValueError("Esse e-mail já foi cadastrado")
+        # verificar profissionais
         for p in View.profissional_listar():
-            raise ValueError("Esse e-mail já foi cadastrado")
-        if email == "admin":
-            raise ValueError ("Esse e-mail já foi cadastrado")
+            try:
+                existing = p.get_email()
+            except Exception:
+                existing = None
+            if existing and isinstance(existing, str) and existing.strip().lower() == email_norm:
+                raise ValueError("Esse e-mail já foi cadastrado")
 
 
     def cliente_listar():
